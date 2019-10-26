@@ -24,10 +24,24 @@ __published:	// IDE-managed Components
         TLabel *Label1;
         TLabel *Label2;
         TLabel *Label3;
-        TLabel *Label4;
-        TLabel *Label5;
-        TTimer *playerMove;
+        TLabel *LabelPlayerGoals;
+        TLabel *LabelOpponentGoals;
+        TTimer *playerLeftMove;
+        TImage *playerTargetGoal;
+        TImage *opponentTargetGoal;
+        TTimer *playerRightMove;
+        TTimer *opponentLeftMove;
+        TTimer *opponentRightMove;
         void __fastcall ballMoveTimer(TObject *Sender);
+        void __fastcall playerLeftMoveTimer(TObject *Sender);
+        void __fastcall playerRightMoveTimer(TObject *Sender);
+        void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
+          TShiftState Shift);
+        void __fastcall FormKeyUp(TObject *Sender, WORD &Key,
+          TShiftState Shift);
+        void __fastcall opponentLeftMoveTimer(TObject *Sender);
+        void __fastcall FormActivate(TObject *Sender);
+        void __fastcall opponentRightMoveTimer(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TPenguinHockey(TComponent* Owner);
