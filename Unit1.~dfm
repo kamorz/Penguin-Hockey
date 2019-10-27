@@ -1,6 +1,6 @@
 object PenguinHockey: TPenguinHockey
-  Left = 484
-  Top = 28
+  Left = 446
+  Top = 62
   Width = 827
   Height = 679
   Align = alBottom
@@ -12,6 +12,7 @@ object PenguinHockey: TPenguinHockey
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  OnActivate = FormActivate
   OnKeyDown = FormKeyDown
   OnKeyUp = FormKeyUp
   PixelsPerInch = 96
@@ -146,7 +147,7 @@ object PenguinHockey: TPenguinHockey
   end
   object player: TImage
     Left = 232
-    Top = 440
+    Top = 424
     Width = 33
     Height = 52
     AutoSize = True
@@ -223,7 +224,7 @@ object PenguinHockey: TPenguinHockey
     Transparent = True
   end
   object opponent: TImage
-    Left = 432
+    Left = 232
     Top = 136
     Width = 33
     Height = 52
@@ -301,8 +302,8 @@ object PenguinHockey: TPenguinHockey
     Transparent = True
   end
   object ball: TImage
-    Left = 16
-    Top = 184
+    Left = 240
+    Top = 296
     Width = 23
     Height = 23
     AutoSize = True
@@ -525,6 +526,7 @@ object PenguinHockey: TPenguinHockey
     Top = 40
   end
   object opponentLeftMove: TTimer
+    Enabled = False
     Interval = 1
     OnTimer = opponentLeftMoveTimer
     Left = 8
@@ -532,7 +534,8 @@ object PenguinHockey: TPenguinHockey
   end
   object opponentRightMove: TTimer
     Enabled = False
-    Interval = 5
+    Interval = 1
+    OnTimer = opponentRightMoveTimer
     Left = 40
     Top = 80
   end

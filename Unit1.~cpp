@@ -102,16 +102,24 @@ if (Key==VK_RIGHT)       playerRightMove->Enabled=false;
 
 void __fastcall TPenguinHockey::opponentLeftMoveTimer(TObject *Sender)
 {
-while (opponent->Left > opponentTarget->Left)
-{
-  opponent->Left-=1;
-}
-while (opponent->Left < opponentTarget->Left+opponentTarget->Width)
-{
-  opponent->Left+=1;
-}
+  opponent->Left-=3;
 }
 //---------------------------------------------------------------------------
 
 
 
+
+
+void __fastcall TPenguinHockey::opponentRightMoveTimer(TObject *Sender)
+{
+  opponent->Left+=3;
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TPenguinHockey::FormActivate(TObject *Sender)
+{
+        while (opponent->Left>15)
+  opponentLeftMove->Enabled=true;
+}
+//---------------------------------------------------------------------------

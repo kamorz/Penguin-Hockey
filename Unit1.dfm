@@ -1,7 +1,7 @@
 object PenguinHockey: TPenguinHockey
-  Left = 446
-  Top = 62
-  Width = 827
+  Left = 557
+  Top = 0
+  Width = 960
   Height = 679
   Align = alBottom
   Caption = 'PenguinHockey'
@@ -18,7 +18,7 @@ object PenguinHockey: TPenguinHockey
   PixelsPerInch = 96
   TextHeight = 13
   object background: TShape
-    Left = 0
+    Left = -8
     Top = 0
     Width = 500
     Height = 600
@@ -224,7 +224,7 @@ object PenguinHockey: TPenguinHockey
     Transparent = True
   end
   object opponent: TImage
-    Left = 232
+    Left = 224
     Top = 136
     Width = 33
     Height = 52
@@ -303,7 +303,7 @@ object PenguinHockey: TPenguinHockey
   end
   object ball: TImage
     Left = 240
-    Top = 296
+    Top = 192
     Width = 23
     Height = 23
     AutoSize = True
@@ -367,13 +367,13 @@ object PenguinHockey: TPenguinHockey
   object Label1: TLabel
     Left = 560
     Top = 16
-    Width = 101
-    Height = 47
-    Caption = 'WYNIK'
+    Width = 292
+    Height = 36
+    Caption = 'REMAINING TIME:'
     Font.Charset = EASTEUROPE_CHARSET
     Font.Color = clWindowText
     Font.Height = -32
-    Font.Name = 'Sitka Display'
+    Font.Name = 'Times New Roman'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -505,38 +505,56 @@ object PenguinHockey: TPenguinHockey
     Transparent = True
     Visible = False
   end
+  object LabelTime: TLabel
+    Left = 856
+    Top = 16
+    Width = 8
+    Height = 36
+    Font.Charset = EASTEUROPE_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -32
+    Font.Name = 'Times New Roman'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object ballMove: TTimer
-    Interval = 100
+    Interval = 25
     OnTimer = ballMoveTimer
     Left = 5
-    Top = 5
+    Top = 61
   end
   object playerLeftMove: TTimer
     Enabled = False
     Interval = 18
     OnTimer = playerLeftMoveTimer
     Left = 8
-    Top = 40
+    Top = 96
   end
   object playerRightMove: TTimer
     Enabled = False
     Interval = 18
     OnTimer = playerRightMoveTimer
     Left = 40
-    Top = 40
+    Top = 96
   end
   object opponentLeftMove: TTimer
     Enabled = False
     Interval = 1
     OnTimer = opponentLeftMoveTimer
     Left = 8
-    Top = 80
+    Top = 128
   end
   object opponentRightMove: TTimer
     Enabled = False
     Interval = 1
     OnTimer = opponentRightMoveTimer
     Left = 40
-    Top = 80
+    Top = 128
+  end
+  object MatchTime: TTimer
+    Interval = 100
+    OnTimer = MatchTimeTimer
+    Left = 8
+    Top = 8
   end
 end
