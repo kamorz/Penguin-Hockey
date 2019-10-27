@@ -32,6 +32,8 @@ __published:	// IDE-managed Components
         TTimer *playerRightMove;
         TTimer *opponentLeftMove;
         TTimer *opponentRightMove;
+        TLabel *LabelTime;
+        TTimer *MatchTime;
         void __fastcall ballMoveTimer(TObject *Sender);
         void __fastcall playerLeftMoveTimer(TObject *Sender);
         void __fastcall playerRightMoveTimer(TObject *Sender);
@@ -42,6 +44,7 @@ __published:	// IDE-managed Components
         void __fastcall opponentLeftMoveTimer(TObject *Sender);
         void __fastcall FormActivate(TObject *Sender);
         void __fastcall opponentRightMoveTimer(TObject *Sender);
+        void __fastcall MatchTimeTimer(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TPenguinHockey(TComponent* Owner);

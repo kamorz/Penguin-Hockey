@@ -9,10 +9,12 @@
 #pragma resource "*.dfm"
 TPenguinHockey *PenguinHockey;
 int verticalMove=-6;
-int horizontalMove=-6;
+int horizontalMove=6;
+int remainingTime=1000;
 
 int playerGoals=0;
 int opponentGoals=0;
+char opponentDirection='R';
 
 //---------------------------------------------------------------------------
 __fastcall TPenguinHockey::TPenguinHockey(TComponent* Owner)
@@ -67,6 +69,20 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
     Application->ProcessMessages(); Sleep(800);
     opponentTargetGoal->Visible=false;
    }
+
+   if (ball->Left >player->Left-ball->Width/2 &&
+   ball->Left <player->Left+player->Width &&
+   ball->Top+ball->Height >  player->Top)
+   {
+    if (verticalMove>0)    verticalMove=- verticalMove;
+   }
+   if (ball->Left >opponent->Left-ball->Width/2 &&
+   ball->Left <opponent->Left+opponent->Width &&
+   ball->Top <  opponent->Top)
+   {
+    if (verticalMove>0)    verticalMove=- verticalMove;
+   }
+
    }
 //---------------------------------------------------------------------------
 
@@ -102,24 +118,41 @@ if (Key==VK_RIGHT)       playerRightMove->Enabled=false;
 
 void __fastcall TPenguinHockey::opponentLeftMoveTimer(TObject *Sender)
 {
-  opponent->Left-=3;
+ if (opponent->Left+opponent->Width > background->Width-310) opponent->Left-=3;
+ else opponentDirection='R';
 }
 //---------------------------------------------------------------------------
 
 
-
-
-
 void __fastcall TPenguinHockey::opponentRightMoveTimer(TObject *Sender)
 {
-  opponent->Left+=3;
+ if (opponent->Left+opponent->Width < background->Width-160) opponent->Left+=3;
+ else  opponentDirection='L';
 }
 //---------------------------------------------------------------------------
 
 
 void __fastcall TPenguinHockey::FormActivate(TObject *Sender)
 {
-        while (opponent->Left>15)
-  opponentLeftMove->Enabled=true;
+        LabelTime->Caption=remainingTime;
+        opponentRightMove->Enabled=true;
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TPenguinHockey::MatchTimeTimer(TObject *Sender)
+{
+remainingTime-=1;
+LabelTime->Caption=remainingTime/10;
+if (opponentDirection=='L')
+      {
+       opponentLeftMove->Enabled=true;
+       opponentRightMove->Enabled=false;
+      }
+else if (opponentDirection=='R')
+        {
+        opponentRightMove->Enabled=true;
+        opponentLeftMove->Enabled=false;
+        }
+}
+//---------------------------------------------------------------------------
+
