@@ -11,7 +11,7 @@
 TPenguinHockey *PenguinHockey;
 int verticalMove=-6;
 int horizontalMove=-5;
-int remainingTime=1000;
+int remainingTime=100;
 
 int playerGoals=0;
 int opponentGoals=0;
@@ -24,6 +24,24 @@ __fastcall TPenguinHockey::TPenguinHockey(TComponent* Owner)
 {
 }
 //---------------------------------------------------------------------------
+
+
+void __fastcall TPenguinHockey::MatchTimeTimer(TObject *Sender)
+{
+remainingTime-=1;
+LabelTime->Caption="REMAINING TIME: "+ IntToStr(remainingTime/600)+":"
++IntToStr((remainingTime%600)/10);
+if (opponentDirection=='L')
+      {
+       opponentLeftMove->Enabled=true;
+       opponentRightMove->Enabled=false;
+      }
+else if (opponentDirection=='R')
+        {
+        opponentRightMove->Enabled=true;
+        opponentLeftMove->Enabled=false;
+        }
+}
 
 
 void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
@@ -109,7 +127,7 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
       //CONTACTS WITH PLAYERS AND TARGETS
    else
    {
-   if (verticalMove>0)     //
+   if (verticalMove>0)
    {
         if (ball->Left >player->Left-ball->Width/2 &&
         ball->Left <player->Left+player->Width &&
@@ -133,7 +151,7 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
         ball->Left >  player->Left+player->Width-6 ))
         {
          horizontalMove=-horizontalMove;
-         verticalMove=-verticalMove;
+         verticalMove=-4;
         }
         else if (ball->Top + ball->Height >opponent->Top &&
         ball->Top < opponent->Top+opponent->Height &&
@@ -143,7 +161,7 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
         ball->Left >  opponent->Left+opponent->Width-6 ))
         {
          horizontalMove=-horizontalMove;
-         verticalMove=-verticalMove;
+         verticalMove=4;
         }
    }
    else if (verticalMove<0)
@@ -183,13 +201,26 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
         else if (ball->Top + ball->Height >opponent->Top &&
         ball->Top < opponent->Top+opponent->Height &&
         (ball->Left+ball->Width >  opponent->Left &&
-        ball->Left+ball->Width <  opponent->Left+6  ||
+        ball->Left+ball->Width <  opponent->Left+15  ||
         ball->Left <  opponent->Left+opponent->Width &&
-        ball->Left >  opponent->Left+opponent->Width-6 ))
+        ball->Left >  opponent->Left+opponent->Width-15 ))
         {
          horizontalMove=-horizontalMove;
          verticalMove=-verticalMove;
         }
+    }
+    //TIME OVER
+    if (remainingTime<=0)
+    {
+     LabelGoal->Caption="Final result: "+IntToStr(playerGoals)+":"+IntToStr(opponentGoals);
+     LabelGoal->Visible=true;
+        ball->Visible=false;
+        ballMove->Enabled=false;
+        MatchTime->Enabled=false;
+        LabelTime->Visible=false;
+        player->Visible=false;
+        opponent->Visible=false;
+
     }
     }
     }
@@ -250,22 +281,9 @@ void __fastcall TPenguinHockey::FormActivate(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TPenguinHockey::MatchTimeTimer(TObject *Sender)
-{
-remainingTime-=1;
-LabelTime->Caption=remainingTime/10;
-if (opponentDirection=='L')
-      {
-       opponentLeftMove->Enabled=true;
-       opponentRightMove->Enabled=false;
-      }
-else if (opponentDirection=='R')
-        {
-        opponentRightMove->Enabled=true;
-        opponentLeftMove->Enabled=false;
-        }
-}
+
 //---------------------------------------------------------------------------
+
 
 
 

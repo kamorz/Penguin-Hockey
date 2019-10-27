@@ -1,6 +1,6 @@
 object PenguinHockey: TPenguinHockey
-  Left = 200
-  Top = 28
+  Left = 374
+  Top = 71
   Width = 960
   Height = 679
   Align = alBottom
@@ -395,19 +395,6 @@ object PenguinHockey: TPenguinHockey
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000}
     Transparent = True
   end
-  object Label1: TLabel
-    Left = 560
-    Top = 16
-    Width = 292
-    Height = 36
-    Caption = 'REMAINING TIME:'
-    Font.Charset = EASTEUROPE_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -32
-    Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
   object Label2: TLabel
     Left = 560
     Top = 96
@@ -537,9 +524,9 @@ object PenguinHockey: TPenguinHockey
     Visible = False
   end
   object LabelTime: TLabel
-    Left = 856
+    Left = 560
     Top = 16
-    Width = 8
+    Width = 304
     Height = 36
     Font.Charset = EASTEUROPE_CHARSET
     Font.Color = clWindowText
@@ -563,7 +550,7 @@ object PenguinHockey: TPenguinHockey
     Visible = False
   end
   object ballMove: TTimer
-    Interval = 25
+    Interval = 14
     OnTimer = ballMoveTimer
     Left = 5
     Top = 61

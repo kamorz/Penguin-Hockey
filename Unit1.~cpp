@@ -4,12 +4,13 @@
 #pragma hdrstop
 
 #include "Unit1.h"
+
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TPenguinHockey *PenguinHockey;
 int verticalMove=-6;
-int horizontalMove=6;
+int horizontalMove=-5;
 int remainingTime=1000;
 
 int playerGoals=0;
@@ -25,16 +26,18 @@ __fastcall TPenguinHockey::TPenguinHockey(TComponent* Owner)
 //---------------------------------------------------------------------------
 
 
-
 void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
 {
+
    ball->Left+=horizontalMove;
    ball->Top+=verticalMove;
 
+   //CONTACTS WITH WALLS
    if (ball->Left-5  <= background->Left)       horizontalMove=-horizontalMove;
    if (ball->Top-5   <= background->Top)        verticalMove=-verticalMove;
    if (ball->Left +ball->Width+5 >= background->Width) horizontalMove=-horizontalMove;
    if (ball->Top+ ball->Height>= background->Top+background->Height)    verticalMove=-verticalMove;
+
 
    //OPPONENT GOAL
    if (
@@ -49,8 +52,14 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
     LabelOpponentGoals->Caption=opponentGoals;
     ball->Visible=false;
     playerTargetGoal->Visible=true;
+    LabelGoal->Visible=true;
     Application->ProcessMessages(); Sleep(800);
     playerTargetGoal->Visible=false;
+    LabelGoal->Visible=false;
+        ball->Left=100;     ball->Top=200;
+        int verticalMove=6;    int horizontalMove=6;
+        ball->Visible=true;
+        ballMove->Enabled=true;
    }
 
    //PLAYER GOAL
@@ -66,24 +75,126 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
     LabelPlayerGoals->Caption=playerGoals;
     ball->Visible=false;
     opponentTargetGoal->Visible=true;
+    LabelGoal->Visible=true;
     Application->ProcessMessages(); Sleep(800);
     opponentTargetGoal->Visible=false;
+    LabelGoal->Visible=false;
+        ball->Left=100;     ball->Top=400;
+        int verticalMove=-6;    int horizontalMove=6;
+        ball->Visible=true;
+        ballMove->Enabled=true;
    }
 
-   if (ball->Left >player->Left-ball->Width/2 &&
-   ball->Left <player->Left+player->Width &&
-   ball->Top+ball->Height >  player->Top)
-   {
-    if (verticalMove>0)    verticalMove=- verticalMove;
-   }
-   if (ball->Left >opponent->Left-ball->Width/2 &&
-   ball->Left <opponent->Left+opponent->Width &&
-   ball->Top <  opponent->Top)
-   {
-    if (verticalMove>0)    verticalMove=- verticalMove;
-   }
 
+   //CONTACT WITH SIDE PARTS OF TARGETS
+   if   (ball->Top + ball->Height >opponentTarget->Top &&
+        ball->Top < opponentTarget->Top+opponentTarget->Height &&
+        (ball->Left+ball->Width >  opponentTarget->Left &&
+        ball->Left+ball->Width <  opponentTarget->Left+6  ||
+        ball->Left <  opponentTarget->Left+opponentTarget->Width &&
+        ball->Left >  opponentTarget->Left+opponentTarget->Width-6 ))
+        {
+         horizontalMove=-horizontalMove;
+        }
+        if (ball->Top + ball->Height >playerTarget->Top &&
+        ball->Top < playerTarget->Top+playerTarget->Height &&
+        (ball->Left+ball->Width >  playerTarget->Left &&
+        ball->Left+ball->Width <  playerTarget->Left+6  ||
+        ball->Left <  playerTarget->Left+playerTarget->Width &&
+        ball->Left >  playerTarget->Left+playerTarget->Width-6 ))
+        {
+         horizontalMove=-horizontalMove;
+        }
+
+      //CONTACTS WITH PLAYERS AND TARGETS
+   else
+   {
+   if (verticalMove>0)     //
+   {
+        if (ball->Left >player->Left-ball->Width/2 &&
+        ball->Left <player->Left+player->Width &&
+        ball->Top+ball->Height >  player->Top &&
+        ball->Top+ball->Height <  player->Top+6)
+        {
+        verticalMove=- verticalMove;
+        }
+        else if (ball->Left >opponentTarget->Left-ball->Width/2 &&
+        ball->Left <opponentTarget->Left+opponentTarget->Width &&
+        ball->Top+ball->Height >  opponentTarget->Top &&
+        ball->Top+ball->Height <  opponentTarget->Top+6)
+        {
+        verticalMove=- verticalMove;
+        }
+        else if (ball->Top + ball->Height >player->Top &&
+        ball->Top < player->Top+player->Height &&
+        (ball->Left+ball->Width >  player->Left &&
+        ball->Left+ball->Width <  player->Left+15  ||
+        ball->Left <  player->Left+player->Width &&
+        ball->Left >  player->Left+player->Width-6 ))
+        {
+         horizontalMove=-horizontalMove;
+         verticalMove=-verticalMove;
+        }
+        else if (ball->Top + ball->Height >opponent->Top &&
+        ball->Top < opponent->Top+opponent->Height &&
+        (ball->Left+ball->Width >  opponent->Left &&
+        ball->Left+ball->Width <  opponent->Left+15  ||
+        ball->Left <  opponent->Left+opponent->Width &&
+        ball->Left >  opponent->Left+opponent->Width-6 ))
+        {
+         horizontalMove=-horizontalMove;
+         verticalMove=-verticalMove;
+        }
    }
+   else if (verticalMove<0)
+    {
+        {
+        if (ball->Left >opponent->Left-ball->Width/2 &&
+        ball->Left <opponent->Left+opponent->Width &&
+        ball->Top <  opponent->Top+opponent->Height &&
+        ball->Top >  opponent->Top+opponent->Height-6)
+        {
+        verticalMove=- verticalMove;
+        }
+        else if (ball->Left >playerTarget->Left-ball->Width/2 &&
+        ball->Left <playerTarget->Left+playerTarget->Width &&
+        ball->Top <  playerTarget->Top+playerTarget->Height &&
+        ball->Top >  playerTarget->Top+playerTarget->Height-6)
+        {
+        verticalMove=- verticalMove;
+        }
+        else if (ball->Left >player->Left-ball->Width/2 &&
+        ball->Left <player->Left+player->Width &&
+        ball->Top <  player->Top+player->Height &&
+        ball->Top >  player->Top+player->Height-6)
+        {
+        verticalMove=- verticalMove;
+        }
+        else if (ball->Top + ball->Height >player->Top &&
+        ball->Top < player->Top+player->Height &&
+        (ball->Left+ball->Width >  player->Left &&
+        ball->Left+ball->Width <  player->Left+6  ||
+        ball->Left <  player->Left+player->Width &&
+        ball->Left >  player->Left+player->Width-6 ))
+        {
+         horizontalMove=-horizontalMove;
+         verticalMove=-verticalMove;
+        }
+        else if (ball->Top + ball->Height >opponent->Top &&
+        ball->Top < opponent->Top+opponent->Height &&
+        (ball->Left+ball->Width >  opponent->Left &&
+        ball->Left+ball->Width <  opponent->Left+6  ||
+        ball->Left <  opponent->Left+opponent->Width &&
+        ball->Left >  opponent->Left+opponent->Width-6 ))
+        {
+         horizontalMove=-horizontalMove;
+         verticalMove=-verticalMove;
+        }
+    }
+    }
+    }
+}
+
 //---------------------------------------------------------------------------
 
 
@@ -118,7 +229,7 @@ if (Key==VK_RIGHT)       playerRightMove->Enabled=false;
 
 void __fastcall TPenguinHockey::opponentLeftMoveTimer(TObject *Sender)
 {
- if (opponent->Left+opponent->Width > background->Width-310) opponent->Left-=3;
+ if (opponent->Left+opponent->Width > background->Width-280) opponent->Left-=3;
  else opponentDirection='R';
 }
 //---------------------------------------------------------------------------
@@ -126,7 +237,7 @@ void __fastcall TPenguinHockey::opponentLeftMoveTimer(TObject *Sender)
 
 void __fastcall TPenguinHockey::opponentRightMoveTimer(TObject *Sender)
 {
- if (opponent->Left+opponent->Width < background->Width-160) opponent->Left+=3;
+ if (opponent->Left+opponent->Width < background->Width-190) opponent->Left+=3;
  else  opponentDirection='L';
 }
 //---------------------------------------------------------------------------
@@ -155,4 +266,6 @@ else if (opponentDirection=='R')
         }
 }
 //---------------------------------------------------------------------------
+
+
 
