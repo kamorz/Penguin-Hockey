@@ -21,7 +21,6 @@ __published:	// IDE-managed Components
         TImage *opponent;
         TImage *ball;
         TTimer *ballMove;
-        TLabel *Label1;
         TLabel *Label2;
         TLabel *Label3;
         TLabel *LabelPlayerGoals;

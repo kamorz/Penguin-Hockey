@@ -221,6 +221,14 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
         player->Visible=false;
         opponent->Visible=false;
 
+        if (playerGoals>opponentGoals)
+        LabelFinal->Caption="YOU WON!";
+        else if (playerGoals<opponentGoals)
+        LabelFinal->Caption="YOU LOSE!";
+        else if (playerGoals==opponentGoals)
+        LabelFinal->Caption="IT'S A DRAW!";
+
+        LabelFinal->Visible=true;
     }
     }
     }

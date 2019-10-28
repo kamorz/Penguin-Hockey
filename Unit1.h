@@ -34,6 +34,7 @@ __published:	// IDE-managed Components
         TLabel *LabelTime;
         TTimer *MatchTime;
         TLabel *LabelGoal;
+        TLabel *LabelFinal;
         void __fastcall ballMoveTimer(TObject *Sender);
         void __fastcall playerLeftMoveTimer(TObject *Sender);
         void __fastcall playerRightMoveTimer(TObject *Sender);

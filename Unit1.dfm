@@ -1,6 +1,6 @@
 object PenguinHockey: TPenguinHockey
-  Left = 374
-  Top = 71
+  Left = 373
+  Top = 24
   Width = 960
   Height = 679
   Align = alBottom
@@ -545,6 +545,19 @@ object PenguinHockey: TPenguinHockey
     Font.Color = clWindowText
     Font.Height = -40
     Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold, fsItalic]
+    ParentFont = False
+    Visible = False
+  end
+  object LabelFinal: TLabel
+    Left = 232
+    Top = 208
+    Width = 10
+    Height = 46
+    Font.Charset = EASTEUROPE_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -40
+    Font.Name = 'Times New Roman'
     Font.Style = [fsBold, fsItalic]
     ParentFont = False
     Visible = False
