@@ -11,9 +11,9 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TPenguinHockey *PenguinHockey;
-int verticalMove=-6;
-int horizontalMove=-5;
-int remainingTime=3000;
+int verticalMove=-5;
+int horizontalMove=-4;
+int remainingTime=1800;
 
 int playerGoals=0;
 int opponentGoals=0;
@@ -68,9 +68,9 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
    if (
    verticalMove>=0 &&
    ball->Top>= playerTarget->Top-30 &&
-   ball->Top<= playerTarget->Top &&
-   ball->Left  >= playerTarget->Left &&
-   ball->Left +ball->Width <= playerTarget->Left+playerTarget->Width)
+   ball->Top<= playerTarget->Top+5 &&
+   ball->Left  >= playerTarget->Left-5 &&
+   ball->Left +ball->Width <= playerTarget->Left+playerTarget->Width+5)
    {
     ballMove->Enabled=false;
     opponentGoals+=1;
@@ -78,7 +78,7 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
     ball->Visible=false;
     playerTargetGoal->Visible=true;
     LabelGoal->Visible=true;
-    Application->ProcessMessages(); Sleep(800);
+    Application->ProcessMessages(); Sleep(1200);
     playerTargetGoal->Visible=false;
     LabelGoal->Visible=false;
         ball->Left=100;     ball->Top=200;
@@ -91,9 +91,9 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
    if (
    verticalMove<=0 &&
    ball->Top >= opponentTarget->Top-10 &&
-   ball->Top<= opponentTarget->Top+30 &&
-   ball->Left  >= opponentTarget->Left &&
-   ball->Left +ball->Width <= opponentTarget->Left+opponentTarget->Width )
+   ball->Top<= opponentTarget->Top+opponentTarget->Height+5 &&
+   ball->Left  >= opponentTarget->Left-5 &&
+   ball->Left +ball->Width <= opponentTarget->Left+opponentTarget->Width+5 )
    {
     ballMove->Enabled=false;
     playerGoals+=1;
@@ -101,7 +101,7 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
     ball->Visible=false;
     opponentTargetGoal->Visible=true;
     LabelGoal->Visible=true;
-    Application->ProcessMessages(); Sleep(800);
+    Application->ProcessMessages(); Sleep(1200);
     opponentTargetGoal->Visible=false;
     LabelGoal->Visible=false;
         ball->Left=200;     ball->Top=400;
@@ -112,21 +112,21 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
 
 
    //CONTACT WITH SIDE PARTS OF TARGETS
-   if   (ball->Top + ball->Height >opponentTarget->Top &&
+        if   (ball->Top + ball->Height >opponentTarget->Top &&
         ball->Top < opponentTarget->Top+opponentTarget->Height &&
-        (ball->Left+ball->Width >  opponentTarget->Left &&
-        ball->Left+ball->Width <  opponentTarget->Left+6  ||
-        ball->Left <  opponentTarget->Left+opponentTarget->Width &&
-        ball->Left >  opponentTarget->Left+opponentTarget->Width-6 ))
+        (ball->Left+ball->Width >  opponentTarget->Left-6 &&
+        ball->Left+ball->Width <  opponentTarget->Left  ||
+        ball->Left <  opponentTarget->Left+opponentTarget->Width+6 &&
+        ball->Left >  opponentTarget->Left+opponentTarget->Width ))
         {
          horizontalMove=-horizontalMove;
         }
-        if (ball->Top + ball->Height >playerTarget->Top &&
+        else if (ball->Top + ball->Height >playerTarget->Top &&
         ball->Top < playerTarget->Top+playerTarget->Height &&
-        (ball->Left+ball->Width >  playerTarget->Left &&
-        ball->Left+ball->Width <  playerTarget->Left+6  ||
-        ball->Left <  playerTarget->Left+playerTarget->Width &&
-        ball->Left >  playerTarget->Left+playerTarget->Width-6 ))
+        (ball->Left+ball->Width >  playerTarget->Left-6 &&
+        ball->Left+ball->Width <  playerTarget->Left  ||
+        ball->Left <  playerTarget->Left+playerTarget->Width+6 &&
+        ball->Left >  playerTarget->Left+playerTarget->Width ))
         {
          horizontalMove=-horizontalMove;
         }
@@ -141,33 +141,65 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
         ball->Top+ball->Height >  player->Top &&
         ball->Top+ball->Height <  player->Top+6)
         {
-        verticalMove=- verticalMove;
+                if (ball->Left+ball->Width/2<player->Left+8)
+                {
+                verticalMove=-4;
+                horizontalMove=-5;
+                }
+                else if (ball->Left+ball->Width/2>=player->Left+8 &&
+                ball->Left+ball->Width/2<player->Left+17)
+                {
+                verticalMove=-6;
+                horizontalMove=-2;
+                }
+                else if(ball->Left+ball->Width/2>=player->Left+17 &&
+                ball->Left+ball->Width/2<player->Left+25)
+                {
+                verticalMove=-6;
+                horizontalMove=2;
+                }
+                else if (ball->Left+ball->Width/2>=player->Left+25)
+                {
+                verticalMove=-4;
+                horizontalMove=5;
+                }
         }  //WITH OPPONENT TARGET
-        else if (ball->Left >opponentTarget->Left-ball->Width/2 &&
-        ball->Left <opponentTarget->Left+opponentTarget->Width &&
-        ball->Top+ball->Height >  opponentTarget->Top &&
-        ball->Top+ball->Height <  opponentTarget->Top+6)
+        else if (ball->Left+ball->Width >=opponentTarget->Left &&
+        ball->Left <=opponentTarget->Left+opponentTarget->Width &&
+        ball->Top+ball->Height >  opponentTarget->Top-6 &&
+        ball->Top+ball->Height <  opponentTarget->Top)
         {
         verticalMove=- verticalMove;
         }     //WITH PLAYER SIDE
-        else if (ball->Top +ball->Height > player->Top-3 &&
-        ball->Top < player->Top+player->Height+2 &&
-        (ball->Left+ball->Width >  player->Left-2 &&
-        ball->Left+ball->Width <  player->Left+8  ||
-        ball->Left <  player->Left+player->Width-2 &&
-        ball->Left >  player->Left+player->Width-8 ))
+        else if (ball->Top +ball->Height > player->Top &&
+        ball->Top < player->Top+player->Height &&
+        (ball->Left+ball->Width >  player->Left-6 &&
+        ball->Left+ball->Width <  player->Left+15  ||
+        ball->Left <  player->Left+player->Width-15 &&
+        ball->Left >  player->Left+player->Width+6 ))
         {
          horizontalMove=-horizontalMove;
          verticalMove=-verticalMove;
         }     //WITH OPPONENT SIDE
         else if (ball->Top + ball->Height >opponent->Top &&
         ball->Top < opponent->Top+opponent->Height &&
-        (ball->Left+ball->Width >  opponent->Left &&
-        ball->Left+ball->Width <  opponent->Left+6  ||
-        ball->Left <  opponent->Left+opponent->Width &&
-        ball->Left >  opponent->Left+opponent->Width-6 ))
+        (ball->Left+ball->Width >  opponent->Left-6 &&
+        ball->Left+ball->Width <  opponent->Left+20  ||
+        ball->Left <  opponent->Left+opponent->Width-20 &&
+        ball->Left >  opponent->Left+opponent->Width+6 ))
         {
          horizontalMove=-horizontalMove;
+        }
+           //CONTACT WITH CORNER PARTS OF OPPONENT TARGET
+        else if   (ball->Top + ball->Height >opponentTarget->Top-6 &&
+        ball->Top <= opponentTarget->Top &&
+        (ball->Left+ball->Width >  opponentTarget->Left-6 &&
+        ball->Left+ball->Width <  opponentTarget->Left && horizontalMove>0 ||
+        ball->Left <  opponentTarget->Left+opponentTarget->Width+6 &&
+        ball->Left >  opponentTarget->Left+opponentTarget->Width && horizontalMove<0))
+        {
+         horizontalMove=-horizontalMove;
+         verticalMove=-verticalMove;
         }
    }
    else if (verticalMove<0)   //DURING BALL TOWARDS UP
@@ -178,12 +210,27 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
         ball->Top <  opponent->Top+opponent->Height &&
         ball->Top >  opponent->Top+opponent->Height-6)
         {
-        verticalMove=- verticalMove;
+                if (ball->Left+ball->Width/2<opponent->Left+20)
+                {
+                verticalMove=4;
+                horizontalMove=-6;
+                }
+                else if(ball->Left+ball->Width/2>=opponent->Left+21 &&
+                ball->Left+ball->Width/2<opponent->Left+30)
+                {
+                verticalMove=-6;
+                horizontalMove=2;
+                }
+                else if (ball->Left+ball->Width/2>=opponent->Left+31)
+                {
+                verticalMove=4;
+                horizontalMove=6;
+                }
         }     //WITH PLAYER TARGET
-        else if (ball->Left >playerTarget->Left-ball->Width/2 &&
-        ball->Left <playerTarget->Left+playerTarget->Width &&
-        ball->Top <  playerTarget->Top+playerTarget->Height &&
-        ball->Top >  playerTarget->Top+playerTarget->Height-6)
+        else if (ball->Left+ball->Width >=playerTarget->Left &&
+        ball->Left <=playerTarget->Left+playerTarget->Width &&
+        ball->Top <  playerTarget->Top+playerTarget->Height+6 &&
+        ball->Top >  playerTarget->Top+playerTarget->Height)
         {
         verticalMove=- verticalMove;
         }     //WITH PLAYER
@@ -196,20 +243,29 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
         }       //WITH PLAYER SIDE
         else if (ball->Top + ball->Height >player->Top &&
         ball->Top < player->Top+player->Height &&
-        (ball->Left+ball->Width >  player->Left &&
-        ball->Left+ball->Width <  player->Left+6  ||
-        ball->Left <  player->Left+player->Width &&
-        ball->Left >  player->Left+player->Width-6 ))
+        (ball->Left+ball->Width >  player->Left-6 &&
+        ball->Left+ball->Width <  player->Left+15  ||
+        ball->Left <  player->Left+player->Width-15 &&
+        ball->Left >  player->Left+player->Width+6 ))
         {
          horizontalMove=-horizontalMove;
-         verticalMove=-verticalMove;
         }      //WITH OPPONENT SIDE
         else if (ball->Top + ball->Height >opponent->Top &&
         ball->Top < opponent->Top+opponent->Height &&
-        (ball->Left+ball->Width >  opponent->Left &&
-        ball->Left+ball->Width <  opponent->Left+6  ||
-        ball->Left <  opponent->Left+opponent->Width &&
-        ball->Left >  opponent->Left+opponent->Width-6 ))
+        (ball->Left+ball->Width >  opponent->Left-6 &&
+        ball->Left+ball->Width <  opponent->Left+20  ||
+        ball->Left <  opponent->Left+opponent->Width+6 &&
+        ball->Left >  opponent->Left+opponent->Width-20 ))
+        {
+         horizontalMove=-horizontalMove;
+         verticalMove=-verticalMove;
+        }       //WITH CORNER PARTS OF PLAYER TARGET
+        else if (ball->Top >=playerTarget->Top+playerTarget->Height &&
+        ball->Top < playerTarget->Top+playerTarget->Height+6 &&
+        (ball->Left+ball->Width >  playerTarget->Left-6 &&
+        ball->Left+ball->Width <  playerTarget->Left && horizontalMove>0 ||
+        ball->Left <  playerTarget->Left+playerTarget->Width+6 &&
+        ball->Left >  playerTarget->Left+playerTarget->Width && horizontalMove<0))
         {
          horizontalMove=-horizontalMove;
          verticalMove=-verticalMove;
@@ -238,7 +294,7 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
         Button1->Visible=true;
         Button2->Visible=true;
         opponentRightMove->Enabled=false;
-        remainingTime=300;
+        remainingTime=1800;
         int playerGoals=0;
         int opponentGoals=0;
     }
@@ -252,13 +308,13 @@ void __fastcall TPenguinHockey::ballMoveTimer(TObject *Sender)
 
 void __fastcall TPenguinHockey::playerLeftMoveTimer(TObject *Sender)
 {
-if (player->Left>10)    player->Left-=10;
+if (player->Left>40)    player->Left-=10;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TPenguinHockey::playerRightMoveTimer(TObject *Sender)
 {
-if (player->Left+player->Width<background->Width-10)    player->Left+=10;
+if (player->Left+player->Width<background->Width-40)    player->Left+=10;
 }
 //---------------------------------------------------------------------------
 
@@ -280,7 +336,7 @@ if (Key==VK_RIGHT)       playerRightMove->Enabled=false;
 
 void __fastcall TPenguinHockey::opponentLeftMoveTimer(TObject *Sender)
 {
- if (opponent->Left+opponent->Width > background->Width-300) opponent->Left-=4;
+ if (opponent->Left+opponent->Width > background->Width-280) opponent->Left-=4;
  else opponentDirection='R';
 }
 //---------------------------------------------------------------------------
@@ -288,7 +344,7 @@ void __fastcall TPenguinHockey::opponentLeftMoveTimer(TObject *Sender)
 
 void __fastcall TPenguinHockey::opponentRightMoveTimer(TObject *Sender)
 {
- if (opponent->Left+opponent->Width < background->Width-150) opponent->Left+=4;
+ if (opponent->Left+opponent->Width < background->Width-160) opponent->Left+=4;
  else  opponentDirection='L';
 }
 //---------------------------------------------------------------------------
@@ -309,7 +365,6 @@ void __fastcall TPenguinHockey::FormActivate(TObject *Sender)
 
 void __fastcall TPenguinHockey::Button1Click(TObject *Sender)
 {
- //sndPlaySound("a/Beachparty.wav",SND_ASYNC);
  startPicture->Visible=false;
  Button1->Visible=false;
  Button2->Visible=false;

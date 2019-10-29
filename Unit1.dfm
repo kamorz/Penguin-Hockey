@@ -1,9 +1,9 @@
 object PenguinHockey: TPenguinHockey
-  Left = 286
-  Top = 47
+  Left = 489
+  Top = 26
   AlphaBlend = True
   AutoSize = True
-  BorderStyle = bsNone
+  BorderStyle = bsDialog
   Caption = 'PenguinHockey'
   ClientHeight = 645
   ClientWidth = 830
@@ -543,12 +543,12 @@ object PenguinHockey: TPenguinHockey
   object LabelGoal: TLabel
     Left = 184
     Top = 280
-    Width = 150
+    Width = 174
     Height = 46
-    Caption = 'GOAL!'
+    Caption = 'GOAL!!!'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -40
+    Font.Height = -43
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold, fsItalic]
     ParentFont = False
@@ -3529,7 +3529,7 @@ object PenguinHockey: TPenguinHockey
   end
   object ballMove: TTimer
     Enabled = False
-    Interval = 17
+    Interval = 15
     OnTimer = ballMoveTimer
     Left = 5
     Top = 61

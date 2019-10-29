@@ -1,19 +1,22 @@
 object PenguinHockey: TPenguinHockey
   Left = 286
   Top = 47
-  Width = 838
-  Height = 645
   AlphaBlend = True
   AutoSize = True
   BorderStyle = bsNone
   Caption = 'PenguinHockey'
+  ClientHeight = 645
+  ClientWidth = 830
   Color = clBtnFace
+  UseDockManager = True
+  DefaultMonitor = dmDesktop
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  ShowHint = True
   OnActivate = FormActivate
   OnKeyDown = FormKeyDown
   OnKeyUp = FormKeyUp
@@ -336,7 +339,7 @@ object PenguinHockey: TPenguinHockey
   end
   object ball: TImage
     Left = 320
-    Top = 208
+    Top = 400
     Width = 23
     Height = 23
     AutoSize = True
@@ -567,8 +570,8 @@ object PenguinHockey: TPenguinHockey
   object startPicture: TImage
     Left = 0
     Top = 0
-    Width = 822
-    Height = 606
+    Width = 830
+    Height = 645
     Align = alCustom
     AutoSize = True
     Center = True
@@ -3526,7 +3529,7 @@ object PenguinHockey: TPenguinHockey
   end
   object ballMove: TTimer
     Enabled = False
-    Interval = 14
+    Interval = 17
     OnTimer = ballMoveTimer
     Left = 5
     Top = 61
